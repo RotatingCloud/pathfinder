@@ -8,4 +8,4 @@ Created a reset button that clears the board and destination nodes.
 
 To-Do
 
-- add A* algorithm
+- add maze generation
