@@ -1,3 +1,11 @@
+@import url('https://fonts.cdnfonts.com/css/cobbler');
+
+body {
+
+    
+    font-family: 'Cobbler', sans-serif;
+}
+
 .grid {
 
     display: flex;
@@ -11,18 +19,15 @@
     width: 200px;
     height: 150px;
 
-    border: 10px solid #928677;
+    border: 10px solid #FFE7BB;
 
     margin: 20px;
 
     text-align: center;
 
     border-radius: 28px;
-    background: rgb(190, 177, 156);
-    box-shadow:  6px 6px 12px #8b8071,
-             -6px -6px 12px #bbad99;
 
-    color: #6d5f4e;
+    color: #FFE7BB;
 
     transition: 0.3s;
 }
@@ -30,6 +35,10 @@
 #destination-node-display:hover {
 
     transform: scale(1.1);
+
+    background: #9B886A;
+    box-shadow:  9px 9px 29px #71634d,
+             -9px -9px 29px #c5ad87;
 }
 
 #buttons {
@@ -55,21 +64,26 @@
 
     border-radius: 40px;
 
-    color: #6d5f4e;
+    color: #FFE7BB;
 
-    border: 10px solid #928677;
+    border: 10px solid #FFE7BB;
 
     border-radius: 28px;
-    background: rgb(190, 177, 156);
-    box-shadow:  6px 6px 12px #8b8071,
-             -6px -6px 12px #bbad99;
 
     transition: 0.3s;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 #directions:hover {
 
     transform: scale(1.1);
+
+    background: #9B886A;
+    box-shadow:  9px 9px 29px #71634d,
+             -9px -9px 29px #c5ad87;
 }
 
 #header {

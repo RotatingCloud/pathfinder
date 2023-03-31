@@ -372,10 +372,9 @@ export default class Engine extends Component {
         <div id="header">
 
         <div id="directions">
-            <h3>Directions:</h3>
             click on a node to make it a destination node <br />
             hold shift and drag to make a wall <br />
-            press the go button to visualize the path <br />
+            press an algorithm to visualize the path <br />
             press the reset button to clear the grid <br />
         </div>
 

@@ -1,18 +1,19 @@
 .node {
     width: 25px;
     height: 25px;
-    outline: 2px solid rgb(143, 132, 119);
+    outline: 2px solid #68573b;
     display: inline-block;
 
     overflow: visible;
 
     margin-left: 4px;
+    margin-bottom: -1px;
 
     position: relative;
 }
 
 .node-destination {
-    background-color: rgb(173, 97, 53) !important;
+    background-color: rgb(22, 78, 0) !important;
 }
 
 .node-visited {
@@ -44,7 +45,7 @@
   
     100% {
       transform: scale(1);
-      background-color: rgb(206, 192, 175);
+      background-color: rgb(204, 170, 129);
     }
   }
   
@@ -71,12 +72,12 @@
   
     50% {
 
-      background-color: rgb(214, 255, 161);
+      background-color: rgb(63, 129, 47);
     }
   
     100% {
       transform: scale(1);
-      background-color: rgb(150, 255, 109);
+      background-color: rgb(100, 255, 39);
     }
   }
 
@@ -99,8 +100,13 @@
     z-index: 1;
     opacity: 0;
     animation-name: nodeDistanceAnimation;
-    animation-duration: 0.2s;
+    animation-duration: 0.4s;
     animation-timing-function: ease-out;
     animation-delay: 0.2s; 
     animation-fill-mode: forwards;
+
+    user-select: none;
+    -webkit-user-select: none; 
+    -moz-user-select: none;
+    -ms-user-select: none; 
   }
