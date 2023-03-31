@@ -80,8 +80,16 @@
     }
   }
 
-  .node-distance {
+  @keyframes nodeDistanceAnimation {
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
 
+  .node-distance {
     font-size: 12px;
     position: absolute;
     top: 50%;
@@ -89,4 +97,10 @@
     transform: translate(-50%, -50%);
     color: rgb(255, 255, 255);
     z-index: 1;
+    opacity: 0;
+    animation-name: nodeDistanceAnimation;
+    animation-duration: 0.2s;
+    animation-timing-function: ease-out;
+    animation-delay: 0.2s; 
+    animation-fill-mode: forwards;
   }

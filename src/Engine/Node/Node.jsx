@@ -21,8 +21,9 @@ export default class Node extends Component {
             onMouseEnter,
             onMouseUp,
             row,
-            isVisited, // Add isVisited here
-            distance, // Add distance here
+            isVisited, 
+            distance, 
+            heuristic,
         
         } = this.props;
 

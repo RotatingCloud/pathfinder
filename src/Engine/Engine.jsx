@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import Node from "./Node/Node";
 
 import { dijkstra, getNodesInShortestPathOrder } from "../Algorithms/dijkstra";
+import { aStar } from "../Algorithms/astar";
 
 import "./Engine.css";
 
@@ -145,23 +146,26 @@ export default class Engine extends Component {
     }
   };
 
-  animateDijkstra(visitedNodesInOrder, nodesInShortestPathOrder) {
-    for (let i = 0; i <= visitedNodesInOrder.length; i++) {
-      if (i === visitedNodesInOrder.length) {
+  animatePathfinding(visitedNodesInOrderList, nodesInShortestPathOrder) {
+    this.setState({ isAnimating: true });
+  
+    for (let i = 0; i <= visitedNodesInOrderList.length; i++) {
+      if (i === visitedNodesInOrderList.length) {
         setTimeout(() => {
           this.animateShortestPath(nodesInShortestPathOrder);
           this.setState({ isAnimating: false });
         }, 10 * i);
-
+  
         return;
       }
-
+  
       setTimeout(() => {
-        const node = visitedNodesInOrder[i];
+        const node = visitedNodesInOrderList[i];
         const element = document.getElementById(`node-${node.row}-${node.col}`);
-
+  
         if (
-          element.className !== "node node-destination"
+          element.className !== "node node-start" &&
+          element.className !== "node node-finish"
         ) {
           document.getElementById(`node-${node.row}-${node.col}`).className =
             "node node-visited";
@@ -169,22 +173,24 @@ export default class Engine extends Component {
       }, 10 * i);
     }
   }
-
+  
   animateShortestPath(nodesInShortestPathOrder) {
+
     for (let i = 0; i < nodesInShortestPathOrder.length; i++) {
       setTimeout(() => {
         const node = nodesInShortestPathOrder[i];
         const element = document.getElementById(`node-${node.row}-${node.col}`);
-
+  
         if (
-          element.className !== "node node-destination"
+          element.className !== "node node-start" &&
+          element.className !== "node node-finish"
         ) {
           document.getElementById(`node-${node.row}-${node.col}`).className =
             "node node-shortest-path";
         }
       }, 20 * i);
     }
-
+  
     this.setState({ isAnimating: false });
   }
 
@@ -238,7 +244,33 @@ export default class Engine extends Component {
     const finishNode = grid[destinationNodes[1].row][destinationNodes[1].col];
     const visitedNodesInOrder = dijkstra(grid, startNode, finishNode);
     const nodesInShortestPathOrder = getNodesInShortestPathOrder(finishNode);
-    this.animateDijkstra(visitedNodesInOrder, nodesInShortestPathOrder);
+    this.animatePathfinding(visitedNodesInOrder, nodesInShortestPathOrder);
+    this.setState({ isAnimating: true });
+  }
+
+  visualizeAStar() {
+
+    console.log("Starting visualizeAStar()...");
+    const { grid, destinationNodes } = this.state;
+
+    if(this.isEmpty()) {
+  
+        alert("Please add some walls to the grid!");
+    }
+
+
+    if(destinationNodes.length !== 2) {
+
+      alert("Please select two destination nodes!");
+      return;
+
+    }
+    
+    const startNode = grid[destinationNodes[0].row][destinationNodes[0].col];
+    const finishNode = grid[destinationNodes[1].row][destinationNodes[1].col];
+    const visitedNodesInOrder = aStar(grid, startNode, finishNode);
+    const nodesInShortestPathOrder = getNodesInShortestPathOrder(finishNode);
+    this.animatePathfinding(visitedNodesInOrder, nodesInShortestPathOrder);
     this.setState({ isAnimating: true });
   }
 
@@ -345,9 +377,9 @@ export default class Engine extends Component {
             hold shift and drag to make a wall <br />
             press the go button to visualize the path <br />
             press the reset button to clear the grid <br />
-          </div>
+        </div>
 
-          <div id="destination-node-display">
+        <div id="destination-node-display">
             <h3>Destination Nodes:</h3>
             {grid.map((row, rowIdx) => {
               return (
@@ -362,7 +394,7 @@ export default class Engine extends Component {
                 </div>
               );
             })}
-          </div>
+        </div>
         </div>
         <div className="grid">
           {grid.map((row, rowIdx) => {
@@ -376,6 +408,7 @@ export default class Engine extends Component {
                     isWall,
                     isVisited,
                     distance,
+                    heuristic,
                   } = node;
                   return (
                     <Node
@@ -386,6 +419,7 @@ export default class Engine extends Component {
                       row={row}
                       isVisited={isVisited}
                       distance={distance}
+                      heuristic={heuristic}
                       isAnimating={this.state.isAnimating}
                       onMouseDown={(e) => this.handleMouseDown(row, col, e)}
                       onMouseEnter={(e) => this.handleMouseEnter(row, col, e)}
@@ -398,7 +432,8 @@ export default class Engine extends Component {
           })}
 
           <div id="buttons">
-            <button onClick={() => this.visualizeDijkstra()} disabled={this.state.isAnimating}>G O</button>
+            <button onClick={() => this.visualizeDijkstra()} disabled={this.state.isAnimating}>D I J K S T R A</button>
+            <button onClick={() => this.visualizeAStar()} disabled={this.state.isAnimating}>A S T A R</button>
             <button onClick={() => this.clearGrid()} disabled={this.state.isAnimating}>R E S E T</button>
           </div>
         </div>
@@ -429,6 +464,7 @@ const createNode = (col, row, isStart, isDestination, color, isSelected) => {
     isVisited: false,
     isWall: false,
     previousNode: null,
+    heuristic: Infinity,
     color,
     isSelected,
   };
