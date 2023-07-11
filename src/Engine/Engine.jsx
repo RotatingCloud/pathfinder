@@ -153,7 +153,7 @@ export default class Engine extends Component {
       if (i === visitedNodesInOrderList.length) {
         setTimeout(() => {
           this.animateShortestPath(nodesInShortestPathOrder);
-          this.setState({ isAnimating: false });
+          this.setState({ isAnimating: true });
         }, 10 * i);
   
         return;
@@ -191,7 +191,7 @@ export default class Engine extends Component {
       }, 20 * i);
     }
   
-    this.setState({ isAnimating: false });
+    this.setState({ isAnimating: true });
   }
 
   isEmpty() {
@@ -300,6 +300,7 @@ export default class Engine extends Component {
       }
   
       this.setState({ destinationNodes: [] });
+      this.setState({ isAnimating: false });
       console.log("Destination nodes cleared.");
     });
   };
@@ -369,32 +370,43 @@ export default class Engine extends Component {
 
     return (
       <>
-        <div id="header">
 
-        <div id="directions">
-            click on a node to make it a destination node <br />
-            hold shift and drag to make a wall <br />
-            press an algorithm to visualize the path <br />
-            press the reset button to clear the grid <br />
+      <div id="title">
+
+        DIJKSTRA & A* PATHFINDER
+
+      </div>
+
+      <div id="main">
+
+        <div id="side">
+
+          <div id="directions">
+              1. click on a node to make it a destination node <br/> <br/>
+              2. hold shift and drag to make a wall <br/> <br/>
+              3. press an algorithm to visualize the path <br/> <br/>
+              4. press the reset button to clear the grid <br/>
+          </div>
+
+          <div id="destination-node-display">
+              <h3>Destination Nodes:</h3>
+              {grid.map((row, rowIdx) => {
+                return (
+                  <div key={rowIdx}>
+                    {row
+                      .filter((node) => node.color === "node-destination")
+                      .map((node, nodeIdx) => (
+                        <span key={nodeIdx}>
+                          ({node.row}, {node.col})
+                        </span>
+                      ))}
+                  </div>
+                );
+              })}
+          </div>
+
         </div>
 
-        <div id="destination-node-display">
-            <h3>Destination Nodes:</h3>
-            {grid.map((row, rowIdx) => {
-              return (
-                <div key={rowIdx}>
-                  {row
-                    .filter((node) => node.color === "node-destination")
-                    .map((node, nodeIdx) => (
-                      <span key={nodeIdx}>
-                        ({node.row}, {node.col})
-                      </span>
-                    ))}
-                </div>
-              );
-            })}
-        </div>
-        </div>
         <div className="grid">
           {grid.map((row, rowIdx) => {
             return (
@@ -433,9 +445,13 @@ export default class Engine extends Component {
           <div id="buttons">
             <button onClick={() => this.visualizeDijkstra()} disabled={this.state.isAnimating}>D I J K S T R A</button>
             <button onClick={() => this.visualizeAStar()} disabled={this.state.isAnimating}>A S T A R</button>
-            <button onClick={() => this.clearGrid()} disabled={this.state.isAnimating}>R E S E T</button>
+            <button onClick={() => this.clearGrid()} disabled={!this.state.isAnimating}>R E S E T</button>
           </div>
-        </div>
+
+      </div>
+      
+      </div>
+
       </>
     );
   }
